@@ -16,7 +16,7 @@
     var _handler = new Slick.EventHandler();
     var _defaults = {
       selectionCss: {
-        "border": "2px dashed blue"
+        "border": "2px solid green"
       }
     };
 
@@ -30,7 +30,8 @@
         .subscribe(_grid.onDragInit, handleDragInit)
         .subscribe(_grid.onDragStart, handleDragStart)
         .subscribe(_grid.onDrag, handleDrag)
-        .subscribe(_grid.onDragEnd, handleDragEnd);
+        .subscribe(_grid.onDragEnd, handleDragEnd)
+        .subscribe(_grid.onClick, handleClick);
     }
 
     function destroy() {
@@ -44,6 +45,7 @@
 
     function handleDragStart(e, dd) {
       var cell = _grid.getCellFromEvent(e);
+      _grid.resetActiveCell();
       if (_self.onBeforeCellRangeSelected.notify(cell) !== false) {
         if (_grid.canCellBeSelected(cell.row, cell.cell)) {
           _dragging = true;
@@ -91,7 +93,7 @@
       _dragging = false;
       e.stopImmediatePropagation();
 
-      _decorator.hide();
+      //_decorator.hide();
       _self.onCellRangeSelected.notify({
         range: new Slick.Range(
             dd.range.start.row,
@@ -100,14 +102,26 @@
             dd.range.end.cell
         )
       });
+      _self.onSelectedRangesChanged.notify({
+        range: new Slick.Range(
+          dd.range.start.row,
+          dd.range.start.cell,
+          dd.range.end.row,
+          dd.range.end.cell
+        )
+      });
     }
-
+    function handleClick(e, dd) {
+      _decorator.hide();
+      dd.range = {start:{}, end:{}}
+    }
     $.extend(this, {
       "init": init,
       "destroy": destroy,
 
       "onBeforeCellRangeSelected": new Slick.Event(),
-      "onCellRangeSelected": new Slick.Event()
+      "onCellRangeSelected": new Slick.Event(),
+      "onSelectedRangesChanged": new Slick.Event()
     });
   }
 })(jQuery);

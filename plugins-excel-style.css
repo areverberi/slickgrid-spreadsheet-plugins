@@ -10,10 +10,10 @@ body, BUTTON {
 }
 
 .slick-cell {
-    border-color: transparent #D4D4D4 #D4D4D4 transparent;
+  border-color: #D4D4D4 #D4D4D4 #D4D4D4 #D4D4D4;
     border-style: solid solid solid solid;
-    border-width: 0px 1px 1px 0px;
-    padding: 1px 1px 0px 2px;
+    border-width: 1px 1px 1px 1px;
+    padding: 0px 1px 0px 1px;
     background-color: White;
     font: 11pt Calibri, 'Segoe UI',Arial,Verdana,Sans-Serif;
 }
